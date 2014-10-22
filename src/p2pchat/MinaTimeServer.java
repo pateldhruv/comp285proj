@@ -27,6 +27,7 @@ public class MinaTimeServer {
 	        acceptor.getSessionConfig().setReadBufferSize( 2048 );
 	        acceptor.getSessionConfig().setIdleTime( IdleStatus.BOTH_IDLE, 10 );
 	        acceptor.bind( new InetSocketAddress(PORT) );
+	        //test
 	}
 	
 }
