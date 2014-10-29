@@ -1,0 +1,500 @@
+   24  ls
+   25  add Binary-Operations
+   26  help
+   27  commit
+   28  exit
+   29  gradle eclipse
+   30  quit
+   31  exit
+   32  cd git
+   33  ls
+   34  cd logisim
+   35  gradle build
+   36  gradle build --stacktrace
+   37  gradle build
+   38  gradle build
+   39  gradle launch4j
+   40  gradle
+   41  gradle --help
+   42  gradle launch4j logisim.exe
+   43  gradle launch4j
+   44  gradle launch4j
+   45  exit
+   46  cd git
+   47  cd logisim
+   48  gradle build
+   49  gradle build
+   50  exit
+   51  cd git
+   52  cd logisim
+   53  gradle build
+   54  gradle
+   55  gradle
+   56  exit
+   57  gradle
+   58  exit
+   59  cd git
+   60  cd logisim
+   61  gradle build
+   62  gradle createExe
+   63  exit
+   64  gradle
+   65  exit
+   66  gradle
+   67  exit
+   68  gradle
+   69  gradle
+   70  exit
+   71  gradle
+   72  gradle createExe
+   73  gradle eclipse
+   74  cd git
+   75  cd logisim
+   76  gradle createExe
+   77  gradle build
+   78  gradle run
+   79  gradle
+   80  gradle build
+   81  gradle build --info
+   82  exit
+   83  ls
+   84  cd My Documents
+   85  cd My Documentsl
+   86  cd \My Documents
+   87  ls
+   88  cd /My Documents/
+   89  cd My Documents/
+   90  cd Documents
+   91  ls
+   92  cd Visual Studio 2012/
+   93  cd VisualStudio2012
+   94  cd "Visual Studio 2012"
+   95  ls
+   96  cd Projects
+   97  ls
+   98  cd "Logic Simplifier"
+   99  ls
+  100  git init
+  101  ls
+  102  git add -all
+  103  git add
+  104  cd "Logic Simplifier
+  105  "
+  106  ls
+  107  git add --all
+  108  git commit -m "First Commit"
+  109  git remote add origin git@github.com:realinglebob/Logic-Simplifier.git
+  110  git push -u origin master
+  111  cd
+  112  cd "My Documents
+  113  "
+  114  cd "Visual Studio 2012/Projects/Logic Simplifier"
+  115  git push -u origin master
+  116  git remote add origin git@github.com:realbinglebob/Logic-Simplifier.git
+  117  git puch origin master
+  118  git push origin master
+  119  exit
+  120  cd "My Documents\Visual Studio 2012\Projects\Logic Simplifier\Logic Simplifier"
+  121  ls
+  122  git init
+  123  git add Group.cpp
+  124  git add Group.h
+  125  git add Grouper.cpp
+  126  git add Grouper.h
+  127  ls
+  128  git add Main.cpp
+  129  git add Optimizer.cpp Optimizer.h
+  130  git add Parser.cpp Parser.h Table.cpp Table.h Token.cpp Token.h
+  131  git commit -m "First Commit"
+  132  git remove add origin git@github.com:realbinglebob/Logic-Simplifier.git
+  133  git remote add origin git@github.com:realbinglebob/Logic-Simplifier.git
+  134  git push -u origin master
+  135  exit
+  136  curl https://raw.githubusercontent.com/lawrancej/COMP278-2014/master/starterupper.sh | bash
+  137  curl https://raw.githubusercontent.com/lawrancej/COMP278-2014/master/starterupper.sh | bash
+  138  git add practice.txt
+  139  ls
+  140  cd COMP278-2014
+  141  git add practce.txt
+  142  git add practice.txt
+  143  git commit -m "Git practice"
+  144  git push origin master
+  145  exit
+  146  ls
+  147  cd git
+  148  ls
+  149  cd logisim
+  150  ls
+  151  git pull upstream
+  152  exit
+  153  cd git/logisim
+  154  git pull git@github.com:lawrancej/logisim.git
+  155  exit
+  156  gradle eclipse
+  157  cd git/logisim
+  158  gradle eclipse
+  159  exit
+  160  cd ~/COMP278-2014
+  161  touch lab2solution.txt
+  162  ls
+  163  start .
+  164  git add lab2solution.txt
+  165  git commit -m "Added lab 2 solution."
+  166  git push origin master
+  167  exit
+  168  cd /COMP278
+  169  ls
+  170  cd COMP278-2014/
+  171  git fetch --all
+  172  git merge upstream/master
+  173  git mergetool
+  174  git checkout --ours practice.txt
+  175  start practice.txt
+  176  start practice.txt
+  177  git checkout --ours practice.txt
+  178  git merge upstream/master
+  179  git add practice.txt
+  180  git checkout --ours practice.txt
+  181  git merge upstream/master
+  182  git commit
+  183  git push origin master
+  184  start practice.txt
+  185  git add practice.txt
+  186  git commit
+  187  git commit -m "spelling mistake in practice.txt"
+  188  git push origin master
+  189  exit
+  190  ls
+  191  cd Desktop
+  192  ls
+  193  cd ~/
+  194  ls
+  195  cd Desktop/School
+  196  ls
+  197  cd "Comp 285"
+  198  ls
+  199  cd workspace
+  200  ls
+  201  cd "P2P Chat"
+  202  ls
+  203  ls
+  204  cd src
+  205  ls
+  206  cd~
+  207  cd ..
+  208  git init
+  209  git remote
+  210  git commit -m "First commit"
+  211  git add
+  212  git add src
+  213  git commit -m "First commit."
+  214  git push origin master
+  215  git remote add origin git@github.com:realbinglebob/comp285proj.git
+  216  git push origin master
+  217  exit
+  218  cd ~/COMP278-2014
+  219  touch tab3solution.txt
+  220  start .
+  221  git add lab3solution.txt
+  222  git commit -m "Added lab 3 solution."
+  223  git push origin master
+  224  git merge upstream/master
+  225  git fetch --all
+  226  git merge upstream/master
+  227  git commit -m "Merge."
+  228  git push origin master
+  229  cd ~
+  230  ls
+  231  cd git
+  232  ls
+  233  cd logisim
+  234  ls
+  235  git fetch --all
+  236  git merge upstream/master
+  237  git push origin master
+  238  exit
+  239  cd git/logosim
+  240  cd git/logisim
+  241  gradle eclipse
+  242  gradle batik
+  243  exit
+  244  cd /git/logisim
+  245  cd git/logisim
+  246  git add .
+  247  git commit -m "Added a new graphic for the About image"
+  248  git push origin master
+  249  exit
+  250  cd git/logisim
+  251  gradle sonar
+  252  gradle sonar --stacktrace
+  253  exit
+  254  cd COMP-278
+  255  ls
+  256  cd COMP278-2014/
+  257  git fetch --all
+  258  git merge upstream/master
+  259  git commit
+  260  git push origin master
+  261  touch  lab4solution.txt
+  262  start .
+  263  cd ..
+  264  cd /git/logsim
+  265  cd /git/logisim
+  266  cd git/logisim
+  267  gradle build
+  268  gradle build --info
+  269  gradlecompile
+  270  gradle compile
+  271  gradle compileJava
+  272  gradle compileTestJava
+  273  gradle build
+  274  gradle build --debug
+  275  gradle build --debug | output.txt
+  276  gradle build --debug >> output.txt
+  277  gradle build
+  278  gradle build
+  279  gradle build
+  280  gradle build
+  281  gradle build
+  282  gradle buildExe
+  283  gradle createExecutable
+  284  gradle help
+  285  gradle -- help
+  286  gradle --help
+  287  gradlew build
+  288  gradlew createExe
+  289  gradlew build
+  290  exit
+  291  cd git/logisim
+  292  gradle build
+  293  ./gradlew build
+  294  git fetch -all
+  295  git fetch --all
+  296  git merge
+  297  git merge upstream/master
+  298  gradlew build
+  299  gradlew build
+  300  ./gradlew build
+  301  exit
+  302  cd git/logisim
+  303  gradle eclipse
+  304  gradlew build
+  305  gradle update
+  306  gradle -update
+  307  gradle -v
+  308  exit
+  309  cd git/logisim
+  310  gradle -v
+  311  gradle -v
+  312  gradle
+  313  exit
+  314  cd COMP278-2014/
+  315  git addlab4solution.*
+  316  git add lab4solution.*
+  317  git commit -m "Lab 4 complete."
+  318  git push origin master
+  319  exit
+  320  cd COMP278-2014/
+  321  git fetch -all
+  322  git fetch --all
+  323  git merge upstream master
+  324  git merge upstream/master
+  325  git push origin master
+  326  exit
+  327  cd git/logisim
+  328  git fetch --all
+  329  git merge upstream/master
+  330  git push origin master
+  331  exit
+  332  cd COMP278-2014/
+  333  git fetch --all
+  334  git merge upstream/master
+  335  git push origin master
+  336  exit
+  337  cd git/logisim
+  338  git fetch --all
+  339  exit
+  340  cd C
+  341  cd COMP278-2014/
+  342  git fetch --all
+  343  git merge upstream/master
+  344  git push origin master
+  345  exit
+  346  cd git/logisim
+  347  gradle sonar
+  348  exit
+  349  cd git/logisim
+  350  gradlew sonar
+  351  gradlew sonar
+  352  gradlew sonar --info
+  353  gradlew sonar
+  354  gradlew sonar -- debug
+  355  gradlew sonar --debug
+  356  gradlew sonar
+  357  exit
+  358  cd git/logisim
+  359  gradlew sonar
+  360  gradlew sonar
+  361  gradlew sonar
+  362  exit
+  363  cd git/logisim
+  364  gradlew sonar
+  365  gradlew sonar
+  366  gradle build
+  367  exit
+  368  cd git/logisim
+  369  gradlew build
+  370  gradlew build
+  371  gradlew sonar
+  372  gradlew build
+  373  gradlew build
+  374  gradlew sonar
+  375  gradlew sonar
+  376  gradlew sonar
+  377  gradle sonar
+  378  gradle sonar --info
+  379  exit
+  380  gradlew sonar
+  381  gradlew sonar
+  382  gradlew sonar
+  383  cd git/logisim
+  384  gradlew sonar
+  385  ./gradlew sonar
+  386  ./gradlew sonar --debug
+  387  ./gradle sonar
+  388  gradle sonar
+  389  gradle --version
+  390  exit
+  391  cd git/logisim
+  392  git add *
+  393  git add --all
+  394  git commit "Added anti-aliasing for icons. Moved test package to demo package so JUnit tests aren't required by gradle."
+  395  git commit -m "Added anti-aliasing for icons. Moved test package to demo package so JUnit tests aren't required by gradle."
+  396  git push origin master
+  397  exit
+  398  cd git/logisim
+  399  gradle build
+  400  gradlew createExe
+  401  exit
+  402  ls
+  403  cd /
+  404  ls
+  405  cd ~
+  406  ls
+  407  cd Desktop
+  408  cd School
+  409  cd "Comp 285"
+  410  ls
+  411  cd workspace
+  412  ls
+  413  cd "P2P Chat"
+  414  git commit -m "basic code"
+  415  git push origin master
+  416  git add --all
+  417  git commit -m "basic code"
+  418  git push origin master
+  419  git rm bin
+  420  git rm bin -r
+  421  git commit -m fix
+  422  git push origin master
+  423  exoyt
+  424  exot
+  425  exit
+  426  cd COMP278-2014/
+  427  git fetch --all
+  428  git commit
+  429  git push origin master
+  430  exit
+  431  vimtutori
+  432  vimtutor
+  433  exit
+  434  cd COMP278-2014/
+  435  git fetch --all
+  436  git commit
+  437  git push origin master
+  438  git merge upstream/master
+  439  git commit
+  440  git push origin master
+  441  exit
+  442  cd COMP278-2014/
+  443  git fetch upstream
+  444  git push origin master
+  445  git merge
+  446  git merge upstream/master
+  447  git push origin master
+  448  exit
+  449  cd COMP278-2014/
+  450  start .
+  451  exit
+  452  mkdir test
+  453  cd test
+  454  git init
+  455  git clone https://github.com/realbinglebob/comp285proj.git
+  456  git remote add upstream https://github.com/realbinglebob/comp285proj.git
+  457  git fetch upstream
+  458  git commit
+  459  git push origin master
+  460  git merge upstream/master
+  461  git commit 
+  462  git push origin master
+  463  cd ..
+  464  ls
+  465  rm test -r
+  466  y
+  467  y
+  468  yls
+  469  ls
+  470  exit
+  471  cd COMP278-2014/
+  472  git fetch --all
+  473  git commit
+  474  git push origin master
+  475  git fetch upstream
+  476  git commit
+  477  exit
+  478  cd COMP278-2014/
+  479  git fetch upstream
+  480  git commit
+  481  cd ..
+  482  cd git/logisim
+  483  gradlew sonar
+  484  exit
+  485  cd COMP278-2014/
+  486  git fetch upstream
+  487  git fetch upstream
+  488  git commit
+  489  exit
+  490  cd COMP278-2014/
+  491  gradlew sonar
+  492  cd ..
+  493  cd git/logisim
+  494  gradlew sonar
+  495  gradlew sonar
+  496  exit
+  497  ls
+  498  cd Desktop/
+  499  cd School
+  500  cd "Comp 285"
+  501  cd workspace
+  502  ls
+  503  cd "P2P Chat"
+  504  git add --all
+  505  git commit -m "test for fetch"
+  506  git push origin master
+  507  ls
+  508  git add --all
+  509  git rm -r bin
+  510  git rm -r bin -f
+  511  git rm MineTimeServer.java
+  512  git rm /src/MineTimeServer.java
+  513  git rm \src\MineTimeServer.java
+  514  git rm src\MinaTimeServer.java
+  515  git rm src/MinaTimeServer.java
+  516  git rm MinaTimeServer.java
+  517  git add src
+  518  git commit -m "fix"
+  519  git push origin master
+  520  history git
+  521  history
+  522  history | nano
+  523  history > t.txt
