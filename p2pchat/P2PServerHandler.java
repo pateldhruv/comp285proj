@@ -9,7 +9,7 @@ import io.netty.util.ReferenceCountUtil;
 /**
  * Handles a server-side channel.
  */
-public class ServerHandler extends ChannelInboundHandlerAdapter {
+public class P2PServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {

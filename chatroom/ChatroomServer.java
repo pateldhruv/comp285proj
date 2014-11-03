@@ -8,15 +8,17 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import base.Server;
 
-public class Server {
+public class ChatroomServer extends Server {
 
     private int port;
 
-    public Server(int port) {
+    public ChatroomServer(int port) {
         this.port = port;
     }
 
+    @Override
     public void run() throws Exception {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -27,7 +29,7 @@ public class Server {
              .childHandler(new ChannelInitializer<SocketChannel>() {
                  @Override
                  public void initChannel(SocketChannel ch) throws Exception {
-                     ch.pipeline().addLast(new ServerHandler());
+                     ch.pipeline().addLast(new ChatroomServerHandler());
                  }
              })
              .option(ChannelOption.SO_BACKLOG, 128)
@@ -51,6 +53,6 @@ public class Server {
         } else {
             port = 8080;
         }
-        new Server(port).run();
+        new ChatroomServer(port).run();
     }
 }

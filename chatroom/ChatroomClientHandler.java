@@ -2,11 +2,12 @@ package chatroom;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 
 import java.util.Date;
 
-public class ClientHandler extends ChannelInboundHandlerAdapter {
+import base.ClientHandler;
+
+public class ChatroomClientHandler extends ClientHandler {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         ByteBuf m = (ByteBuf) msg;

@@ -8,8 +8,9 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import base.Client;
 
-public class Client {
+public class ChatroomClient extends Client {
     public static void main(String[] args) throws Exception {
         String host = "127.0.0.1";
         int port = 8080;
@@ -23,7 +24,7 @@ public class Client {
             b.handler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 public void initChannel(SocketChannel ch) throws Exception {
-                    ch.pipeline().addLast(new ClientHandler());
+                    ch.pipeline().addLast(new ChatroomClientHandler());
                 }
             });
 
@@ -36,4 +37,10 @@ public class Client {
             workerGroup.shutdownGracefully();
         }
     }
+
+	@Override
+	public void createGUI() {
+		// TODO Auto-generated method stub
+		
+	}
 }

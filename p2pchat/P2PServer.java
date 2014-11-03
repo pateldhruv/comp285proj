@@ -12,11 +12,11 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 /**
  * Discards any incoming data.
  */
-public class Server {
+public class P2PServer {
 
     private int port;
 
-    public Server(int port) {
+    public P2PServer(int port) {
         this.port = port;
     }
 
@@ -30,7 +30,7 @@ public class Server {
              .childHandler(new ChannelInitializer<SocketChannel>() {
                  @Override
                  public void initChannel(SocketChannel ch) throws Exception {
-                     ch.pipeline().addLast(new ServerHandler());
+                     ch.pipeline().addLast(new P2PServerHandler());
                  }
              })
              .option(ChannelOption.SO_BACKLOG, 128)
@@ -54,6 +54,6 @@ public class Server {
         } else {
             port = 8080;
         }
-        new Server(port).run();
+        new P2PServer(port).run();
     }
 }
