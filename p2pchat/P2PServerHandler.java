@@ -2,14 +2,14 @@ package p2pchat;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
+import base.ServerHandler;
 
 
 /**
  * Handles a server-side channel.
  */
-public class P2PServerHandler extends ChannelInboundHandlerAdapter {
+public class P2PServerHandler extends ServerHandler {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
@@ -30,4 +30,10 @@ public class P2PServerHandler extends ChannelInboundHandlerAdapter {
         cause.printStackTrace();
         ctx.close();
     }
+
+	@Override
+	public void channelActive(ChannelHandlerContext ctx) {
+		// TODO Auto-generated method stub
+		
+	}
 }
