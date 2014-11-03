@@ -9,23 +9,23 @@ import io.netty.util.ReferenceCountUtil;
 /**
  * Handles a server-side channel.
  */
-public class ServerHandler extends ChannelInboundHandlerAdapter { // (1)
+public class ServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) { // (2)
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
     	 ByteBuf in = (ByteBuf) msg;
     	    try {
-    	        while (in.isReadable()) { // (1)
+    	        while (in.isReadable()) {
     	            System.out.print((char) in.readByte());
     	            System.out.flush();
     	        }
     	    } finally {
-    	        ReferenceCountUtil.release(msg); // (2)
+    	        ReferenceCountUtil.release(msg);
     	    }
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) { // (4)
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         // Close the connection when an exception is raised.
         cause.printStackTrace();
         ctx.close();
