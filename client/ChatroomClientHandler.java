@@ -1,6 +1,5 @@
-package chatroom;
+package client;
 
-import base.ClientHandler;
 
 public class ChatroomClientHandler extends ClientHandler {
 

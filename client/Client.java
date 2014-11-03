@@ -1,4 +1,4 @@
-package base;
+package client;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;

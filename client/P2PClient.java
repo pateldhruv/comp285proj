@@ -1,4 +1,4 @@
-package p2pchat;
+package client;
 
 public class P2PClient {
 

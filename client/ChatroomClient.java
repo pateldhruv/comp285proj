@@ -1,4 +1,4 @@
-package chatroom;
+package client;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -8,7 +8,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import base.Client;
+
+import javax.swing.JFrame;
 
 public class ChatroomClient extends Client {
     public static void main(String[] args) throws Exception {
@@ -40,7 +41,7 @@ public class ChatroomClient extends Client {
 
 	@Override
 	public void createGUI() {
-		// TODO Auto-generated method stub
+		frame = new JFrame("MAD Chat");
 		
 	}
 }

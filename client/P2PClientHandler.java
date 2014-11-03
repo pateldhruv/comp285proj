@@ -1,7 +1,6 @@
-package p2pchat;
+package client;
 
 import io.netty.channel.ChannelHandlerContext;
-import base.ClientHandler;
 
 public class P2PClientHandler extends ClientHandler {
 	
