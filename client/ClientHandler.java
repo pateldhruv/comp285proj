@@ -5,7 +5,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 
 public class ClientHandler extends SimpleChannelInboundHandler<String> {
 
-	protected String message;
+	private String message;
 	
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         cause.printStackTrace();
@@ -25,6 +25,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
 
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, String message) throws Exception {
+		System.out.println(message);
 		this.message = message;
 	}
 

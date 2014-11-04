@@ -72,12 +72,12 @@ public class ChatroomClient extends Client {
             // Start the client.
             channel = b.connect(host, port).sync().channel();
             future = null;
-            String last = c.getMessage();
-            output.append(last);
+            c.resetMessage();
             while(true) {
-            	if(last != null && !last.equals(c.getMessage())) {
-            		output.append(c.getMessage() + "\r\n");
-            		last = c.getMessage();
+            	if(!c.getMessage().equals("")) {
+	            	output.append(c.getMessage());
+	            	output.append("\n");
+	            	c.resetMessage();
             	}
             	if(exit) {
             		System.exit(0);
