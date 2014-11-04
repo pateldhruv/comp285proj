@@ -25,18 +25,20 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+/**
+ * ChatroomClient implementation.
+ * Sets up connections to the main chat room.
+ * @author Mike
+ */
 public class ChatroomClient extends Client {
 	
-	private String host;
-	private int port;
 	private boolean exit = false;
 	
-	Channel channel;
-	ChannelFuture future;
+	private Channel channel;
+	private ChannelFuture future;
 	
 	public ChatroomClient(String host, int port) {
-		this.host = host;
-		this.port = port;
+		super(host, port);
 		createGUI();
 	}
 	
@@ -48,6 +50,13 @@ public class ChatroomClient extends Client {
 		}
     }
     
+    /**
+     * setUp()
+     * Sets up the connection
+     * Writes data to the server
+     * Pulls data from the server
+     * @author Mike
+     */
     @Override
     public void setUp() throws Exception {
         EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -89,23 +98,29 @@ public class ChatroomClient extends Client {
         }
     }
 
+    /**
+     * createGUI()
+     * Builds the GUI using a GroupLayout layout manager.
+     * For more information on GroupLayout: http://docs.oracle.com/javase/tutorial/uiswing/layout/group.html
+     * @author Mike
+     */
 	@Override
 	public void createGUI() {
 		output = new JTextArea(20,40);
 		output.setEditable(false);
 		message = new JTextField(20);
 		sendButton = new JButton("Send");
-		userList = new JList();
+		userList = new JList<String>();
 		String[] userListData = {"test", "test1", "test3"};
 		userList.setListData(userListData);
 		
 		frame = new JFrame("MAD Chat");
 		JPanel panel = new JPanel();
 		
-		/*
+		/**
 		 * Anonymous class for the button action listener.
 		 * Writes the message text to the server on click events.
-		 * -Mike
+		 * @author Mike
 		 */
 		sendButton.addActionListener(new ActionListener() {
 			@Override
@@ -139,10 +154,6 @@ public class ChatroomClient extends Client {
 		panel.setLayout(layout);
 		layout.setAutoCreateContainerGaps(true);
 		
-		/*
-		 * This was awful to make :(
-		 * -Mike
-		 */
 		layout.setHorizontalGroup(
 				layout.createSequentialGroup()
 					.addGroup(

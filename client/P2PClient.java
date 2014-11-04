@@ -1,14 +1,14 @@
 package client;
 
+/**
+ * P2PClient implementation
+ * Sets up connection to a P2PServer.
+ * @author Mike
+ */
 public class P2PClient extends Client {
 
-	private String host;
-	private int port;
-
 	P2PClient(String host, int port) {
-		this.host = host;
-		this.port = port;
-		
+		super(host, port);
 		createGUI();
 	}
 	

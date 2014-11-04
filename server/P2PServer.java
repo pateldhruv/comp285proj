@@ -9,14 +9,15 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 /**
- * Discards any incoming data.
+ * P2PServer implementation
+ * TODO: Implement
+ * This is an old implementation of a discard server.
+ * @author Mike
  */
-public class P2PServer {
-
-    private int port;
-
+public class P2PServer extends Server {
+	
     public P2PServer(int port) {
-        this.port = port;
+        super(port);
     }
 
     public void run() throws Exception {
@@ -55,4 +56,10 @@ public class P2PServer {
         }
         new P2PServer(port).run();
     }
+
+	@Override
+	public void createGUI() {
+		// TODO Auto-generated method stub
+		
+	}
 }

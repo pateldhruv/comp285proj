@@ -1,12 +1,12 @@
 package server;
 
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.util.ReferenceCountUtil;
 
 
 /**
- * Handles a server-side channel.
+ * P2PServerHandler
+ * Writes data received from a client to all other clients.
+ * @author Mike
  */
 public class P2PServerHandler extends ServerHandler {
 

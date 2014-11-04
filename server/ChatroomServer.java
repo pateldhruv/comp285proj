@@ -1,5 +1,16 @@
 package server;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -13,12 +24,24 @@ import io.netty.handler.codec.Delimiters;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 
+/**
+ * ChatroomServer implementation
+ * Sets up the Server for the chat room.
+ * @author Mike
+ */
 public class ChatroomServer extends Server {
 
     public ChatroomServer(int port) {
 		super(port);
 	}
-
+    
+    /**
+     * run()
+     * Sets up server
+     * Writes data to the clients
+     * Pulls data from the clients
+     * @author Mike
+     */
 	@Override
     public void run() throws Exception {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
@@ -51,8 +74,79 @@ public class ChatroomServer extends Server {
             bossGroup.shutdownGracefully();
         }
     }
+	
+	/**
+     * createGUI()
+     * Builds the GUI using a GroupLayout layout manager.
+     * For more information on GroupLayout: http://docs.oracle.com/javase/tutorial/uiswing/layout/group.html
+     * @author Mike
+     */
+	@Override
+	public void createGUI() {
+		output = new JTextArea(20,40);
+		output.setEditable(false);
+		message = new JTextField(20);
+		sendButton = new JButton("Send");
+		userList = new JList<String>();
+		String[] userListData = {"test", "test1", "test3"};
+		userList.setListData(userListData);
+		
+		frame = new JFrame("MAD Chat");
+		JPanel panel = new JPanel();
+		
+		/**
+		 * Anonymous class for the button action listener.
+		 * Writes the message text to the server on click events.
+		 * @author Mike
+		 */
+		sendButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				//TODO: implement.
+			}
+			
+		});
+		
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(600, 400);
+		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);
+		
+		GroupLayout layout = new GroupLayout(panel);
+		panel.setLayout(layout);
+		layout.setAutoCreateContainerGaps(true);
+		
+		layout.setHorizontalGroup(
+				layout.createSequentialGroup()
+					.addGroup(
+						layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+							.addComponent(output, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(message, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addGap(10)
+					.addGroup(
+						layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+							.addComponent(userList, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(sendButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+		
+		layout.setVerticalGroup(
+				layout.createSequentialGroup()
+					.addGroup(
+						layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+							.addComponent(output, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(userList, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addGap(10)
+					.addGroup(
+						layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+							.addComponent(message, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(sendButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+		
+		frame.add(panel);
+		frame.pack();
+		frame.setVisible(true);
+	}
 
     public static void main(String[] args) throws Exception {
     	new ChatroomServer(8080).run();
     }
+
 }
