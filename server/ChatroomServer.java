@@ -8,6 +8,10 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.DelimiterBasedFrameDecoder;
+import io.netty.handler.codec.Delimiters;
+import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.string.StringEncoder;
 
 public class ChatroomServer extends Server {
 
@@ -26,6 +30,11 @@ public class ChatroomServer extends Server {
              .childHandler(new ChannelInitializer<SocketChannel>() {
                  @Override
                  public void initChannel(SocketChannel ch) throws Exception {
+                	 //max size 8192, all input delimited by line endings
+                	 ch.pipeline().addLast("framer", new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()));
+                	 ch.pipeline().addLast("Decoder", new StringDecoder());
+                	 ch.pipeline().addLast("Encoder", new StringEncoder());
+                	 
                      ch.pipeline().addLast(new ChatroomServerHandler());
                  }
              })
@@ -44,12 +53,6 @@ public class ChatroomServer extends Server {
     }
 
     public static void main(String[] args) throws Exception {
-        int port;
-        if (args.length > 0) {
-            port = Integer.parseInt(args[0]);
-        } else {
-            port = 8080;
-        }
-        new ChatroomServer(port).run();
+    	new ChatroomServer(8080).run();
     }
 }

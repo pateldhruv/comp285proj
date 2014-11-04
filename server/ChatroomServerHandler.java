@@ -1,46 +1,50 @@
 package server;
 
-import java.util.Date;
-
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.group.ChannelGroup;
+import io.netty.channel.group.DefaultChannelGroup;
+import io.netty.util.concurrent.GlobalEventExecutor;
 
 /**
  * Handles a server-side channel.
  */
 public class ChatroomServerHandler extends ServerHandler {
 
-	 	@Override
-	    public void channelActive(final ChannelHandlerContext ctx) {
-	        final ByteBuf time = ctx.alloc().buffer(4);
-	        time.writeInt((int) (System.currentTimeMillis() / 1000L + 2208988800L));
-
-	        final ChannelFuture f = ctx.writeAndFlush(time);
-	        f.addListener(new ChannelFutureListener() {
-	            @Override
-	            public void operationComplete(ChannelFuture future) {
-	                assert f == future;
-	                ctx.close();
-	            }
-	        });
-	    }
-
-	    @Override
-	    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-	        cause.printStackTrace();
-	        ctx.close();
-	    }
-	    
-	    public void channelRead(ChannelHandlerContext ctx, Object msg) {
-			ByteBuf m = (ByteBuf) msg;
-	        try {
-	            System.out.println(m);
-	            ctx.close();
-	        } finally {
-	            m.release();
-	        }
+	static final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+	
+	@Override
+	public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
+		System.out.println(ctx.channel().remoteAddress() + " has joined MAD Chat!");
+		for(Channel channel : channels) {
+			channel.write("[SERVER] : " + ctx.channel().remoteAddress() + " has joined MAD Chat!\r\n");
 		}
+		channels.add(ctx.channel());
+	}
+	
+	@Override
+	public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
+		System.out.println(ctx.channel().remoteAddress() + " has left MAD Chat!");
+		for(Channel channel : channels) {
+			channel.write("[SERVER] : " + ctx.channel().remoteAddress() + " has left MAD Chat!\r\n");
+		}
+		channels.remove(ctx.channel());
+	}
+
+	@Override
+	protected void channelRead0(ChannelHandlerContext ctx, String message) throws Exception {
+		System.out.println("[" + ctx.channel().remoteAddress() + "] : " + message + "\r\n");
+		for(Channel c: channels) {
+			if(c != ctx.channel()) {
+				c.writeAndFlush("[" + ctx.channel().remoteAddress() + "] : " + message + "\r\n");
+	 		} else {
+	 			c.writeAndFlush("[you] : " + message + "\r\n");
+	 		}
+	 	}
+		
+	}
+	
 }

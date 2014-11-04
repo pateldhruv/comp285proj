@@ -10,29 +10,10 @@ import io.netty.util.ReferenceCountUtil;
  */
 public class P2PServerHandler extends ServerHandler {
 
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
-    	 ByteBuf in = (ByteBuf) msg;
-    	    try {
-    	        while (in.isReadable()) {
-    	            System.out.print((char) in.readByte());
-    	            System.out.flush();
-    	        }
-    	    } finally {
-    	        ReferenceCountUtil.release(msg);
-    	    }
-    }
-
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        // Close the connection when an exception is raised.
-        cause.printStackTrace();
-        ctx.close();
-    }
-
 	@Override
-	public void channelActive(ChannelHandlerContext ctx) {
+	protected void channelRead0(ChannelHandlerContext arg0, String arg1) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
+	
 }

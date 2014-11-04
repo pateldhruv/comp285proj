@@ -1,6 +1,7 @@
 package client;
 
 import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -8,6 +9,10 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.DelimiterBasedFrameDecoder;
+import io.netty.handler.codec.Delimiters;
+import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.string.StringEncoder;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,41 +27,62 @@ import javax.swing.JTextField;
 
 public class ChatroomClient extends Client {
 	
-	ChannelFuture f;
+	private String host;
+	private int port;
+	private boolean exit = false;
+	
+	Channel channel;
+	ChannelFuture future;
+	
+	public ChatroomClient(String host, int port) {
+		this.host = host;
+		this.port = port;
+		createGUI();
+	}
 	
     public static void main(String[] args) {
-    	ChatroomClient c = new ChatroomClient();
-    	c.createGUI();
     	try {
-			c.setUp();
+    		new ChatroomClient("127.0.0.1", 8080).setUp();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
     }
     
     public void setUp() throws Exception {
-        String host = "127.0.0.1";
-        int port = 8080;
         EventLoopGroup workerGroup = new NioEventLoopGroup();
 
         try {
             Bootstrap b = new Bootstrap();
-            final ChatroomClientHandler c = new ChatroomClientHandler();
+            final ClientHandler c = new ClientHandler();
             b.group(workerGroup);
             b.channel(NioSocketChannel.class);
             b.option(ChannelOption.SO_KEEPALIVE, true);
             b.handler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 public void initChannel(SocketChannel ch) throws Exception {
+                	//max size 8192, all input delimited by line endings
+                	ch.pipeline().addLast("framer", new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()));
+                	ch.pipeline().addLast("Decoder", new StringDecoder());
+                	ch.pipeline().addLast("Encoder", new StringEncoder());
+                	
                     ch.pipeline().addLast(c);
                 }
             });
 
             // Start the client.
-            f = b.connect(host, port).sync();
-            // Wait until the connection is closed.
-            f.channel().closeFuture().sync();
-            output.append(c.getMessage());
+            channel = b.connect(host, port).sync().channel();
+            future = null;
+            String last = c.getMessage();
+            output.append(last);
+            while(true) {
+            	if(last != null && !last.equals(c.getMessage())) {
+            		output.append(c.getMessage() + "\r\n");
+            		last = c.getMessage();
+            	}
+            	if(exit) {
+            		System.exit(0);
+            	}
+            }
         } finally {
             workerGroup.shutdownGracefully();
         }
@@ -65,6 +91,7 @@ public class ChatroomClient extends Client {
 	@Override
 	public void createGUI() {
 		output = new JTextArea(20,40);
+		output.setEditable(false);
 		message = new JTextField(20);
 		sendButton = new JButton("Send");
 		userList = new JList();
@@ -74,7 +101,33 @@ public class ChatroomClient extends Client {
 		frame = new JFrame("MAD Chat");
 		JPanel panel = new JPanel();
 		
-		sendButton.addActionListener(new ButtonListener());
+		/*
+		 * Anonymous class for the button action listener.
+		 * Writes the message text to the server on click events.
+		 * -Mike
+		 */
+		sendButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(channel != null) {
+					if (message.getText().toLowerCase().equals("/bye")) {
+            			try {
+							channel.closeFuture().sync();
+							if(future != null) {
+								future.sync();
+							}
+							exit = true;
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					} else {
+						channel.writeAndFlush(message.getText() + "\r\n");
+					}
+					message.setText("");
+				}
+			}
+			
+		});
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(600, 400);
@@ -116,16 +169,5 @@ public class ChatroomClient extends Client {
 		frame.add(panel);
 		frame.pack();
 		frame.setVisible(true);
-	}
-	
-	private class ButtonListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent event) {
-			if(f != null) {
-				f.channel().writeAndFlush(message.getText());
-			}
-		}
-		
 	}
 }

@@ -1,11 +1,14 @@
 package server;
 
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.SimpleChannelInboundHandler;
 
-public abstract class ServerHandler extends ChannelInboundHandlerAdapter {
-
-	public abstract void channelActive(final ChannelHandlerContext ctx);
-	public abstract void exceptionCaught(ChannelHandlerContext ctx, Throwable cause);
+public abstract class ServerHandler extends SimpleChannelInboundHandler<String> {
+	
+	@Override
+	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+		 cause.printStackTrace();
+	     ctx.close();
+	 }
 	
 }
