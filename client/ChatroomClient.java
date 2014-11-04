@@ -48,6 +48,7 @@ public class ChatroomClient extends Client {
 		}
     }
     
+    @Override
     public void setUp() throws Exception {
         EventLoopGroup workerGroup = new NioEventLoopGroup();
 

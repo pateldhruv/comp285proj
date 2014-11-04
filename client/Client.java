@@ -15,5 +15,6 @@ public abstract class Client {
 	protected JList userList;
 	
 	public abstract void createGUI();
+	public abstract void setUp() throws Exception;
 	
 }

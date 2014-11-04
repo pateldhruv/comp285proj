@@ -35,7 +35,7 @@ public class ChatroomServerHandler extends ServerHandler {
 	}
 
 	@Override
-	protected void channelRead0(ChannelHandlerContext ctx, String message) throws Exception {
+	public void channelRead0(ChannelHandlerContext ctx, String message) throws Exception {
 		System.out.println("[" + ctx.channel().remoteAddress() + "] : " + message + "\r\n");
 		for(Channel c: channels) {
 			if(c != ctx.channel()) {

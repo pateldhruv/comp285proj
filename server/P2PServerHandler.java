@@ -11,7 +11,7 @@ import io.netty.util.ReferenceCountUtil;
 public class P2PServerHandler extends ServerHandler {
 
 	@Override
-	protected void channelRead0(ChannelHandlerContext arg0, String arg1) throws Exception {
+	protected void channelRead0(ChannelHandlerContext ctx, String message) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
