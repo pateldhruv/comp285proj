@@ -1,6 +1,7 @@
 package server;
 
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
@@ -59,6 +60,15 @@ public class ChatroomServer extends Server {
             while(true) {
             	initializer.getMessage();
             	messages = initializer.getMessages();
+            	String[] users = new String[ChatroomServerHandler.channels.size()];
+            	int k = 0;
+            	for(Channel c: ChatroomServerHandler.channels) {
+            		if(k < ChatroomServerHandler.channels.size()) {
+	            		users[k] = c.remoteAddress().toString();
+	            		k++;
+            		}
+            	}
+            	userList.setListData(users);
             	
             	 //Forces the scroll pane to actually scroll to the bottom when new data is put in
             	output.setCaretPosition(output.getDocument().getLength());
