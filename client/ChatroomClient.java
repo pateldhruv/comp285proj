@@ -14,6 +14,7 @@ import io.netty.handler.codec.Delimiters;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -22,6 +23,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -81,18 +83,20 @@ public class ChatroomClient extends Client {
 
             // Start the client.
             channel = b.connect(host, port).sync().channel();
-            future = null;
-            c.resetMessage();
             while(true) {
-            	if(!c.getMessage().equals("")) {
+            	 //Forces the scroll pane to actually scroll to the bottom when new data is put in
+            	output.setCaretPosition(output.getDocument().getLength());
+            	if(c.getMessage() != null && !c.getMessage().equals("")) {
 	            	output.append(c.getMessage());
 	            	output.append("\n");
 	            	c.resetMessage();
             	}
             	if(exit) {
-            		System.exit(0);
+            		break;
             	}
             }
+            channel.closeFuture().sync();
+            future.sync();
         } finally {
             workerGroup.shutdownGracefully();
         }
@@ -106,8 +110,13 @@ public class ChatroomClient extends Client {
      */
 	@Override
 	public void createGUI() {
-		output = new JTextArea(20,40);
+		output = new JTextArea(20, 50);
 		output.setEditable(false);
+		output.setLineWrap(true);
+		output.setWrapStyleWord(true);
+		JScrollPane areaScrollPane = new JScrollPane(output);
+		areaScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		areaScrollPane.setPreferredSize(new Dimension(500, 400));
 		message = new JTextField(20);
 		sendButton = new JButton("Send");
 		userList = new JList<String>();
@@ -147,8 +156,6 @@ public class ChatroomClient extends Client {
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(600, 400);
-		frame.setResizable(false);
-		frame.setLocationRelativeTo(null);
 		
 		GroupLayout layout = new GroupLayout(panel);
 		panel.setLayout(layout);
@@ -158,7 +165,7 @@ public class ChatroomClient extends Client {
 				layout.createSequentialGroup()
 					.addGroup(
 						layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-							.addComponent(output, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(areaScrollPane, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addComponent(message, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 					.addGap(10)
 					.addGroup(
@@ -170,7 +177,7 @@ public class ChatroomClient extends Client {
 				layout.createSequentialGroup()
 					.addGroup(
 						layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-							.addComponent(output, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(areaScrollPane, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addComponent(userList, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 					.addGap(10)
 					.addGroup(
@@ -179,6 +186,8 @@ public class ChatroomClient extends Client {
 							.addComponent(sendButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 		
 		frame.add(panel);
+		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);
 		frame.pack();
 		frame.setVisible(true);
 	}

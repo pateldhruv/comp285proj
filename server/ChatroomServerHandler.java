@@ -15,6 +15,7 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 public class ChatroomServerHandler extends ServerHandler {
 
 	static final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+	private String message = "";
 	
 	/**
 	 * handlerAdded(ChannelHandlerContext ctx)
@@ -24,7 +25,7 @@ public class ChatroomServerHandler extends ServerHandler {
 	 */
 	@Override
 	public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-		System.out.println(ctx.channel().remoteAddress() + " has joined MAD Chat!");
+		message = ctx.channel().remoteAddress() + " has joined MAD Chat!";
 		for(Channel channel : channels) {
 			channel.write("[SERVER] : " + ctx.channel().remoteAddress() + " has joined MAD Chat!\r\n");
 		}
@@ -39,7 +40,7 @@ public class ChatroomServerHandler extends ServerHandler {
 	 */
 	@Override
 	public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-		System.out.println(ctx.channel().remoteAddress() + " has left MAD Chat!");
+		message = ctx.channel().remoteAddress() + " has left MAD Chat!";
 		for(Channel channel : channels) {
 			channel.write("[SERVER] : " + ctx.channel().remoteAddress() + " has left MAD Chat!\r\n");
 		}
@@ -54,7 +55,7 @@ public class ChatroomServerHandler extends ServerHandler {
 	 */
 	@Override
 	public void channelRead0(ChannelHandlerContext ctx, String message) throws Exception {
-		System.out.println("[" + ctx.channel().remoteAddress() + "] : " + message + "\r\n");
+		this.message = "[" + ctx.channel().remoteAddress() + "] : " + message;
 		for(Channel c: channels) {
 			if(c != ctx.channel()) {
 				c.writeAndFlush("[" + ctx.channel().remoteAddress() + "] : " + message + "\r\n");
@@ -63,6 +64,14 @@ public class ChatroomServerHandler extends ServerHandler {
 	 		}
 	 	}
 		
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void resetMessage() {
+		message = "";
 	}
 	
 }

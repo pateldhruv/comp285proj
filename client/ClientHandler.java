@@ -11,7 +11,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
  */
 public class ClientHandler extends SimpleChannelInboundHandler<String> {
 
-	private String message;
+	private String message = "";
 	
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         cause.printStackTrace();

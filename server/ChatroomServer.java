@@ -1,7 +1,15 @@
 package server;
 
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -11,19 +19,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.DelimiterBasedFrameDecoder;
-import io.netty.handler.codec.Delimiters;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
-
 /**
  * ChatroomServer implementation
  * Sets up the Server for the chat room.
@@ -31,6 +26,8 @@ import io.netty.handler.codec.string.StringEncoder;
  */
 public class ChatroomServer extends Server {
 
+	private boolean exit = false;
+	
     public ChatroomServer(int port) {
 		super(port);
 	}
@@ -46,27 +43,37 @@ public class ChatroomServer extends Server {
     public void run() throws Exception {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
+        ServerChannelInitializer initializer = new ServerChannelInitializer();
+        ArrayList<String> messages;
         try {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup)
              .channel(NioServerSocketChannel.class)
-             .childHandler(new ChannelInitializer<SocketChannel>() {
-                 @Override
-                 public void initChannel(SocketChannel ch) throws Exception {
-                	 //max size 8192, all input delimited by line endings
-                	 ch.pipeline().addLast("framer", new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()));
-                	 ch.pipeline().addLast("Decoder", new StringDecoder());
-                	 ch.pipeline().addLast("Encoder", new StringEncoder());
-                	 
-                     ch.pipeline().addLast(new ChatroomServerHandler());
-                 }
-             })
+             .childHandler(initializer)
              .option(ChannelOption.SO_BACKLOG, 128)
              .childOption(ChannelOption.SO_KEEPALIVE, true);
 
             // Bind and start to accept incoming connections.
             ChannelFuture f = b.bind(port).sync();
 
+            while(true) {
+            	initializer.getMessage();
+            	messages = initializer.getMessages();
+            	
+            	 //Forces the scroll pane to actually scroll to the bottom when new data is put in
+            	output.setCaretPosition(output.getDocument().getLength());
+            	if(messages.size() > 0) {
+            		for(int i = 0; i < messages.size(); i++) {
+            			output.append(messages.get(i));
+            			output.append("\n");
+            		}
+            		initializer.resetMessages();
+            	}
+            	if(exit) {
+            		break;
+            	}
+            }
+            
             // Wait until the server socket is closed.
             f.channel().closeFuture().sync();
         } finally {
@@ -91,7 +98,7 @@ public class ChatroomServer extends Server {
 		String[] userListData = {"test", "test1", "test3"};
 		userList.setListData(userListData);
 		
-		frame = new JFrame("MAD Chat");
+		frame = new JFrame("MAD Chat - SERVER");
 		JPanel panel = new JPanel();
 		
 		/**
