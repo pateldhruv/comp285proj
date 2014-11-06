@@ -6,6 +6,7 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
+import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -14,6 +15,7 @@ import io.netty.handler.codec.Delimiters;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -22,21 +24,26 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import server.ChatroomServerHandler;
+
+/**
+ * ChatroomClient implementation.
+ * Sets up connections to the main chat room.
+ * @author Mike
+ */
 public class ChatroomClient extends Client {
 	
-	private String host;
-	private int port;
 	private boolean exit = false;
 	
-	Channel channel;
-	ChannelFuture future;
+	private Channel channel;
+	private ChannelFuture future;
 	
 	public ChatroomClient(String host, int port) {
-		this.host = host;
-		this.port = port;
+		super(host, port);
 		createGUI();
 	}
 	
@@ -48,13 +55,20 @@ public class ChatroomClient extends Client {
 		}
     }
     
+    /**
+     * setUp()
+     * Sets up the connection
+     * Writes data to the server
+     * Pulls data from the server
+     * @author Mike
+     */
     @Override
     public void setUp() throws Exception {
         EventLoopGroup workerGroup = new NioEventLoopGroup();
 
         try {
             Bootstrap b = new Bootstrap();
-            final ClientHandler c = new ClientHandler();
+            final ClientHandler handler = new ClientHandler();
             b.group(workerGroup);
             b.channel(NioSocketChannel.class);
             b.option(ChannelOption.SO_KEEPALIVE, true);
@@ -66,46 +80,69 @@ public class ChatroomClient extends Client {
                 	ch.pipeline().addLast("Decoder", new StringDecoder());
                 	ch.pipeline().addLast("Encoder", new StringEncoder());
                 	
-                    ch.pipeline().addLast(c);
+                    ch.pipeline().addLast(handler);
                 }
             });
 
             // Start the client.
             channel = b.connect(host, port).sync().channel();
-            future = null;
-            c.resetMessage();
-            while(true) {
-            	if(!c.getMessage().equals("")) {
-	            	output.append(c.getMessage());
+            while(true) {            	
+            	 //Forces the scroll pane to actually scroll to the bottom when new data is put in
+            	output.setCaretPosition(output.getDocument().getLength());
+            	if(handler.getMessage() != null && !handler.getMessage().equals("")) {
+	            	output.append(handler.getMessage());
 	            	output.append("\n");
-	            	c.resetMessage();
+	            	handler.resetMessage();
             	}
+            	/**
+            	String[] users = new String[ChatroomServerHandler.getChannels().size()];
+            	int k = 0;
+            	for(Channel c: ChatroomServerHandler.getChannels()) {
+            		if(k < users.length) {
+	            		users[k] = c.remoteAddress().toString();
+	            		k++;
+            		}
+            	}
+            	userList.setListData(users);*/
             	if(exit) {
-            		System.exit(0);
+            		break;
             	}
             }
+            channel.closeFuture().sync();
+            future.sync();
         } finally {
             workerGroup.shutdownGracefully();
         }
     }
 
+    /**
+     * createGUI()
+     * Builds the GUI using a GroupLayout layout manager.
+     * For more information on GroupLayout: http://docs.oracle.com/javase/tutorial/uiswing/layout/group.html
+     * @author Mike
+     */
 	@Override
 	public void createGUI() {
-		output = new JTextArea(20,40);
+		output = new JTextArea(20, 50);
 		output.setEditable(false);
+		output.setLineWrap(true);
+		output.setWrapStyleWord(true);
+		JScrollPane areaScrollPane = new JScrollPane(output);
+		areaScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		areaScrollPane.setPreferredSize(new Dimension(500, 400));
 		message = new JTextField(20);
 		sendButton = new JButton("Send");
-		userList = new JList();
+		userList = new JList<String>();
 		String[] userListData = {"test", "test1", "test3"};
 		userList.setListData(userListData);
 		
 		frame = new JFrame("MAD Chat");
 		JPanel panel = new JPanel();
 		
-		/*
+		/**
 		 * Anonymous class for the button action listener.
 		 * Writes the message text to the server on click events.
-		 * -Mike
+		 * @author Mike
 		 */
 		sendButton.addActionListener(new ActionListener() {
 			@Override
@@ -132,22 +169,16 @@ public class ChatroomClient extends Client {
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(600, 400);
-		frame.setResizable(false);
-		frame.setLocationRelativeTo(null);
 		
 		GroupLayout layout = new GroupLayout(panel);
 		panel.setLayout(layout);
 		layout.setAutoCreateContainerGaps(true);
 		
-		/*
-		 * This was awful to make :(
-		 * -Mike
-		 */
 		layout.setHorizontalGroup(
 				layout.createSequentialGroup()
 					.addGroup(
 						layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-							.addComponent(output, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(areaScrollPane, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addComponent(message, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 					.addGap(10)
 					.addGroup(
@@ -159,7 +190,7 @@ public class ChatroomClient extends Client {
 				layout.createSequentialGroup()
 					.addGroup(
 						layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-							.addComponent(output, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(areaScrollPane, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addComponent(userList, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 					.addGap(10)
 					.addGroup(
@@ -168,6 +199,8 @@ public class ChatroomClient extends Client {
 							.addComponent(sendButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 		
 		frame.add(panel);
+		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);
 		frame.pack();
 		frame.setVisible(true);
 	}

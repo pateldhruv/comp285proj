@@ -1,43 +1,62 @@
 package server;
 
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
 /**
- * Handles a server-side channel.
+ * ChatroomServerHandler
+ * Handles incoming, and outgoing client connections
+ * Writes data received from a client to all other clients.
+ * @author Mike
  */
 public class ChatroomServerHandler extends ServerHandler {
 
-	static final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+	private static final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+	private String message = "";
 	
+	/**
+	 * handlerAdded(ChannelHandlerContext ctx)
+	 * Handles incoming connections.
+	 * Tells all clients on the server who joined.
+	 * @author Mike
+	 */
 	@Override
 	public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-		System.out.println(ctx.channel().remoteAddress() + " has joined MAD Chat!");
-		for(Channel channel : channels) {
+		message = ctx.channel().remoteAddress() + " has joined MAD Chat!";
+		for(Channel channel : getChannels()) {
 			channel.write("[SERVER] : " + ctx.channel().remoteAddress() + " has joined MAD Chat!\r\n");
 		}
-		channels.add(ctx.channel());
+		getChannels().add(ctx.channel());
 	}
 	
+	/**
+	 * handlerRemoved(ChannelHandlerContext ctx)
+	 * Handles outgoing connections.
+	 * Tells all clients on the server who left.
+	 * @author Mike
+	 */
 	@Override
 	public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-		System.out.println(ctx.channel().remoteAddress() + " has left MAD Chat!");
-		for(Channel channel : channels) {
+		message = ctx.channel().remoteAddress() + " has left MAD Chat!";
+		for(Channel channel : getChannels()) {
 			channel.write("[SERVER] : " + ctx.channel().remoteAddress() + " has left MAD Chat!\r\n");
 		}
-		channels.remove(ctx.channel());
+		getChannels().remove(ctx.channel());
 	}
 
+	/**
+	 * channelRead0(ChannelHandlerContext ctx, String message)
+	 * Handles incoming messages from Clients.
+	 * Tells all clients what the Client sending the message said.
+	 * @author Mike
+	 */
 	@Override
 	public void channelRead0(ChannelHandlerContext ctx, String message) throws Exception {
-		System.out.println("[" + ctx.channel().remoteAddress() + "] : " + message + "\r\n");
-		for(Channel c: channels) {
+		this.message = "[" + ctx.channel().remoteAddress() + "] : " + message;
+		for(Channel c: getChannels()) {
 			if(c != ctx.channel()) {
 				c.writeAndFlush("[" + ctx.channel().remoteAddress() + "] : " + message + "\r\n");
 	 		} else {
@@ -45,6 +64,18 @@ public class ChatroomServerHandler extends ServerHandler {
 	 		}
 	 	}
 		
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void resetMessage() {
+		message = "";
+	}
+
+	public static ChannelGroup getChannels() {
+		return channels;
 	}
 	
 }
