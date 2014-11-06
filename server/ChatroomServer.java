@@ -60,10 +60,10 @@ public class ChatroomServer extends Server {
             while(true) {
             	initializer.getMessage();
             	messages = initializer.getMessages();
-            	String[] users = new String[ChatroomServerHandler.channels.size()];
+            	String[] users = new String[ChatroomServerHandler.getChannels().size()];
             	int k = 0;
-            	for(Channel c: ChatroomServerHandler.channels) {
-            		if(k < ChatroomServerHandler.channels.size()) {
+            	for(Channel c: ChatroomServerHandler.getChannels()) {
+            		if(k < users.length) {
 	            		users[k] = c.remoteAddress().toString();
 	            		k++;
             		}

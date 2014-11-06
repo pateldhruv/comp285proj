@@ -6,6 +6,7 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
+import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -26,6 +27,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import server.ChatroomServerHandler;
 
 /**
  * ChatroomClient implementation.
@@ -65,7 +68,7 @@ public class ChatroomClient extends Client {
 
         try {
             Bootstrap b = new Bootstrap();
-            final ClientHandler c = new ClientHandler();
+            final ClientHandler handler = new ClientHandler();
             b.group(workerGroup);
             b.channel(NioSocketChannel.class);
             b.option(ChannelOption.SO_KEEPALIVE, true);
@@ -77,20 +80,30 @@ public class ChatroomClient extends Client {
                 	ch.pipeline().addLast("Decoder", new StringDecoder());
                 	ch.pipeline().addLast("Encoder", new StringEncoder());
                 	
-                    ch.pipeline().addLast(c);
+                    ch.pipeline().addLast(handler);
                 }
             });
 
             // Start the client.
             channel = b.connect(host, port).sync().channel();
-            while(true) {
+            while(true) {            	
             	 //Forces the scroll pane to actually scroll to the bottom when new data is put in
             	output.setCaretPosition(output.getDocument().getLength());
-            	if(c.getMessage() != null && !c.getMessage().equals("")) {
-	            	output.append(c.getMessage());
+            	if(handler.getMessage() != null && !handler.getMessage().equals("")) {
+	            	output.append(handler.getMessage());
 	            	output.append("\n");
-	            	c.resetMessage();
+	            	handler.resetMessage();
             	}
+            	/**
+            	String[] users = new String[ChatroomServerHandler.getChannels().size()];
+            	int k = 0;
+            	for(Channel c: ChatroomServerHandler.getChannels()) {
+            		if(k < users.length) {
+	            		users[k] = c.remoteAddress().toString();
+	            		k++;
+            		}
+            	}
+            	userList.setListData(users);*/
             	if(exit) {
             		break;
             	}
